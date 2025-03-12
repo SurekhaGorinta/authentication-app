@@ -12,6 +12,8 @@
       </div>
       <button type="submit" [disabled]="!loginForm.invalid">Login</button>
     </form>
-    <div *ngIf="message">{{ message }}</div>
+    <div *ngIf="loginForm.get('email')?.invalid && loginForm.get('email')?.touched">
+        Invalid Email
+      </div>
   </div>
   

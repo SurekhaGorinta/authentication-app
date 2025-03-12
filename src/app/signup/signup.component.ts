@@ -1,28 +1,28 @@
-// src/app/signup/signup.component.ts
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { AuthService } from '../auth.service';
+import { CommonModule } from '@angular/common';
+import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-signup',
+  standalone: true,
   templateUrl: './signup.component.html',
-  styleUrls: ['./signup.component.css']
+  styleUrls: ['./signup.component.css'],
+  imports: [CommonModule, ReactiveFormsModule] // ✅ Import required modules
 })
 export class SignupComponent {
   signupForm: FormGroup;
-  message: string = '';
 
-  constructor(private fb: FormBuilder, private authService: AuthService) {
+  constructor(private fb: FormBuilder) {
     this.signupForm = this.fb.group({
       username: ['', Validators.required],
-      password: ['', Validators.required]
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.required, Validators.minLength(6)]]
     });
   }
 
   onSubmit() {
-    const { username, password } = this.signupForm.value;
-    this.authService.signup(username, password).subscribe((response) => {
-      this.message = response.message;
-    });
+    if (this.signupForm.valid) {
+      console.log(this.signupForm.value);
+    }
   }
 }
